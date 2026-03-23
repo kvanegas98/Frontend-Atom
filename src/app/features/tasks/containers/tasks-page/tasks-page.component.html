@@ -1,0 +1,106 @@
+<div class="tasks-page">
+
+  <!-- ── Toolbar ──────────────────────────────────────────────────────── -->
+  <mat-toolbar class="tasks-toolbar" color="primary" role="banner">
+    <div class="tasks-toolbar__brand">
+      <mat-icon aria-hidden="true">check_circle</mat-icon>
+      <span class="tasks-toolbar__title">TodoApp</span>
+    </div>
+
+    <div class="tasks-toolbar__stats" aria-label="Estadísticas de tareas">
+      <span class="tasks-toolbar__stat" matTooltip="Tareas pendientes" aria-label="{{ pendingCount }} tareas pendientes">
+        <mat-icon aria-hidden="true">schedule</mat-icon>
+        {{ pendingCount }}
+      </span>
+      <span class="tasks-toolbar__stat tasks-toolbar__stat--done" matTooltip="Tareas completadas" aria-label="{{ completedCount }} tareas completadas">
+        <mat-icon aria-hidden="true">check_circle</mat-icon>
+        {{ completedCount }}
+      </span>
+    </div>
+
+    <button
+      mat-icon-button
+      (click)="logout()"
+      matTooltip="Cerrar sesión"
+      aria-label="Cerrar sesión"
+      class="tasks-toolbar__logout"
+    >
+      <mat-icon aria-hidden="true">logout</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <!-- ── Main content ─────────────────────────────────────────────────── -->
+  <main class="tasks-main">
+    <div class="tasks-container">
+
+      <!-- New task form -->
+      <app-task-form (taskCreated)="onTaskCreated($event)" />
+
+      <mat-divider class="tasks-divider" />
+
+      <!-- Task list header -->
+      <div class="tasks-list-header">
+        <h2 class="tasks-list-header__title">
+          Mis tareas
+          @if (tasks().length > 0) {
+            <span class="tasks-list-header__count">({{ tasks().length }})</span>
+          }
+        </h2>
+        <button
+          mat-icon-button
+          (click)="loadTasks()"
+          matTooltip="Recargar tareas"
+          aria-label="Recargar tareas"
+          [disabled]="loading()"
+        >
+          <mat-icon [class.spin]="loading()" aria-hidden="true">refresh</mat-icon>
+        </button>
+      </div>
+
+      <!-- Loading state -->
+      @if (loading()) {
+        <div class="tasks-loading" role="status" aria-live="polite" aria-label="Cargando tareas">
+          <mat-spinner diameter="48" />
+          <p>Cargando tareas...</p>
+        </div>
+      }
+
+      <!-- Error state -->
+      @if (error() && !loading()) {
+        <div class="tasks-error" role="alert">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <p>{{ error() }}</p>
+          <button mat-raised-button color="primary" (click)="loadTasks()">
+            Reintentar
+          </button>
+        </div>
+      }
+
+      <!-- Empty state -->
+      @if (!loading() && !error() && tasks().length === 0) {
+        <div class="tasks-empty" role="status">
+          <mat-icon class="tasks-empty__icon" aria-hidden="true">assignment_turned_in</mat-icon>
+          <h3>¡Sin tareas por ahora!</h3>
+          <p>Usa el formulario de arriba para agregar tu primera tarea.</p>
+        </div>
+      }
+
+      <!-- Task list -->
+      @if (!loading() && tasks().length > 0) {
+        <ul class="tasks-list" role="list" aria-label="Lista de tareas">
+          @for (task of tasks(); track task.id) {
+            <li class="tasks-list__item">
+              <app-task-item
+                [task]="task"
+                (toggleStatus)="onToggleStatus($event)"
+                (editTask)="onEditTask($event)"
+                (deleteTask)="onDeleteTask($event)"
+              />
+            </li>
+          }
+        </ul>
+      }
+
+    </div>
+  </main>
+</div>

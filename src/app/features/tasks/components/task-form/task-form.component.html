@@ -1,0 +1,75 @@
+<mat-card class="task-form-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar class="task-form-card__avatar" aria-hidden="true">add_task</mat-icon>
+    <mat-card-title>Nueva tarea</mat-card-title>
+    <mat-card-subtitle>Agrega una tarea a tu lista</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      novalidate
+      class="task-form"
+      aria-label="Formulario para agregar nueva tarea"
+    >
+      <mat-form-field appearance="outline" class="task-form__field">
+        <mat-label>Título *</mat-label>
+        <input
+          matInput
+          formControlName="title"
+          placeholder="¿Qué necesitas hacer?"
+          maxlength="200"
+          aria-label="Título de la tarea"
+          aria-required="true"
+          [attr.aria-invalid]="titleControl.invalid && titleControl.touched"
+        />
+        @if (titleControl.hasError('required') && titleControl.touched) {
+          <mat-error role="alert">El título es obligatorio</mat-error>
+        } @else if (titleControl.hasError('maxlength')) {
+          <mat-error role="alert">Máximo 200 caracteres</mat-error>
+        }
+        <mat-hint align="end">{{ titleControl.value?.length ?? 0 }}/200</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="task-form__field">
+        <mat-label>Descripción (opcional)</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Agrega más detalles..."
+          rows="3"
+          maxlength="1000"
+          aria-label="Descripción de la tarea (opcional)"
+        ></textarea>
+        @if (descriptionControl.hasError('maxlength')) {
+          <mat-error role="alert">Máximo 1000 caracteres</mat-error>
+        }
+        <mat-hint align="end">{{ descriptionControl.value?.length ?? 0 }}/1000</mat-hint>
+      </mat-form-field>
+
+      <div class="task-form__actions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="submitting()"
+          class="task-form__submit"
+          aria-label="Agregar nueva tarea"
+        >
+          @if (submitting()) {
+            <ng-container>
+              <mat-spinner diameter="20" aria-label="Guardando..." />
+              <span>Guardando...</span>
+            </ng-container>
+          } @else {
+            <ng-container>
+              <mat-icon aria-hidden="true">add</mat-icon>
+              <span>Agregar tarea</span>
+            </ng-container>
+          }
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

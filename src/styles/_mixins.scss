@@ -1,0 +1,42 @@
+@use 'variables' as v;
+
+// ── Responsive helpers ───────────────────────────────────────────────────────
+@mixin mobile {
+  @media (max-width: #{v.$bp-mobile}) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: #{v.$bp-tablet}) { @content; }
+}
+
+@mixin desktop {
+  @media (min-width: #{v.$bp-desktop}) { @content; }
+}
+
+// ── Flex helpers ─────────────────────────────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+@mixin card {
+  background: v.$bg-card;
+  border-radius: v.$radius-md;
+  box-shadow: v.$shadow-card;
+  padding: v.$spacing-md;
+}
+
+// ── Truncate text ─────────────────────────────────────────────────────────────
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

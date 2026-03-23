@@ -1,0 +1,121 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+.task-item {
+  border-radius: v.$radius-md !important;
+  box-shadow: v.$shadow-card !important;
+  border-left: 4px solid v.$primary;
+  transition: box-shadow v.$transition-fast, transform v.$transition-fast;
+
+  &:hover {
+    box-shadow: v.$shadow-elevated !important;
+    transform: translateY(-1px);
+  }
+
+  &--completed {
+    border-left-color: v.$success;
+    opacity: 0.85;
+  }
+
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: v.$spacing-md;
+    padding: v.$spacing-md !important;
+
+    @include m.mobile {
+      flex-wrap: wrap;
+      gap: v.$spacing-sm;
+    }
+  }
+
+  &__left {
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: v.$font-size-md;
+    font-weight: v.$font-weight-medium;
+    color: v.$text-primary;
+    margin: 0 0 v.$spacing-xs;
+    word-break: break-word;
+
+    &--strikethrough {
+      text-decoration: line-through;
+      color: v.$text-secondary;
+    }
+  }
+
+  &__description {
+    font-size: v.$font-size-base;
+    color: v.$text-secondary;
+    margin: 0 0 v.$spacing-sm;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: v.$spacing-sm;
+  }
+
+  &__date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: v.$font-size-sm;
+    color: v.$text-hint;
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  &__status-chip {
+    font-size: v.$font-size-sm !important;
+    height: 24px !important;
+    background-color: rgba(v.$primary, 0.1) !important;
+    color: v.$primary !important;
+
+    &--completed {
+      background-color: rgba(v.$success, 0.1) !important;
+      color: v.$success !important;
+    }
+
+    mat-icon {
+      font-size: 14px !important;
+      width: 14px !important;
+      height: 14px !important;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: v.$spacing-xs;
+
+    @include m.mobile {
+      margin-left: auto;
+    }
+  }
+
+  &__btn {
+    &--edit {
+      color: v.$primary;
+    }
+
+    &--delete {
+      color: v.$warn;
+    }
+  }
+}

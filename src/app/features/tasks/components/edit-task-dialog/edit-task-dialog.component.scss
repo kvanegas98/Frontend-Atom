@@ -1,0 +1,33 @@
+@use 'styles/variables' as v;
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+
+  mat-icon {
+    color: v.$primary;
+  }
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  min-width: 400px;
+  padding-top: v.$spacing-sm;
+
+  @media (max-width: #{v.$bp-mobile}) {
+    min-width: unset;
+    width: 100%;
+  }
+
+  &__field {
+    width: 100%;
+  }
+}
+
+.dialog-actions {
+  gap: v.$spacing-sm;
+  padding: v.$spacing-sm v.$spacing-md v.$spacing-md 0;
+}

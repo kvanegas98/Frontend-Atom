@@ -1,0 +1,67 @@
+<mat-card
+  class="task-item"
+  [class.task-item--completed]="isCompleted"
+  role="listitem"
+  [attr.aria-label]="'Tarea: ' + task.title + ', estado: ' + (isCompleted ? 'completada' : 'pendiente')"
+>
+  <mat-card-content class="task-item__content">
+
+    <div class="task-item__left">
+      <mat-checkbox
+        [checked]="isCompleted"
+        (change)="onToggle()"
+        color="primary"
+        [matTooltip]="isCompleted ? 'Marcar como pendiente' : 'Marcar como completada'"
+        [attr.aria-label]="(isCompleted ? 'Marcar como pendiente: ' : 'Marcar como completada: ') + task.title"
+      />
+    </div>
+
+    <div class="task-item__body">
+      <h3 class="task-item__title" [class.task-item__title--strikethrough]="isCompleted">
+        {{ task.title }}
+      </h3>
+
+      @if (task.description) {
+        <p class="task-item__description">{{ task.description }}</p>
+      }
+
+      <div class="task-item__meta">
+        <span class="task-item__date">
+          <mat-icon aria-hidden="true">calendar_today</mat-icon>
+          <time [attr.datetime]="task.createdAt">{{ task.createdAt | formatDate }}</time>
+        </span>
+
+        <mat-chip
+          class="task-item__status-chip"
+          [class.task-item__status-chip--completed]="isCompleted"
+          aria-hidden="true"
+        >
+          <mat-icon matChipAvatar>{{ isCompleted ? 'check_circle' : 'schedule' }}</mat-icon>
+          {{ isCompleted ? 'Completada' : 'Pendiente' }}
+        </mat-chip>
+      </div>
+    </div>
+
+    <div class="task-item__actions">
+      <button
+        mat-icon-button
+        (click)="onEdit()"
+        matTooltip="Editar tarea"
+        [attr.aria-label]="'Editar tarea: ' + task.title"
+        class="task-item__btn task-item__btn--edit"
+      >
+        <mat-icon aria-hidden="true">edit</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        (click)="onDelete()"
+        matTooltip="Eliminar tarea"
+        [attr.aria-label]="'Eliminar tarea: ' + task.title"
+        class="task-item__btn task-item__btn--delete"
+      >
+        <mat-icon aria-hidden="true">delete_outline</mat-icon>
+      </button>
+    </div>
+
+  </mat-card-content>
+</mat-card>

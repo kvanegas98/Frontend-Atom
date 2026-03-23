@@ -1,0 +1,51 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon aria-hidden="true">edit</mat-icon>
+  Editar tarea
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="edit-form" novalidate aria-label="Formulario de edición de tarea">
+    <mat-form-field appearance="outline" class="edit-form__field">
+      <mat-label>Título</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        placeholder="Título de la tarea"
+        aria-label="Título de la tarea"
+        aria-required="true"
+      />
+      @if (titleControl.hasError('required') && titleControl.touched) {
+        <mat-error role="alert">El título es obligatorio</mat-error>
+      } @else if (titleControl.hasError('maxlength')) {
+        <mat-error role="alert">Máximo 200 caracteres</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="edit-form__field">
+      <mat-label>Descripción (opcional)</mat-label>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Describe la tarea..."
+        rows="4"
+        aria-label="Descripción de la tarea (opcional)"
+      ></textarea>
+      @if (descriptionControl.hasError('maxlength')) {
+        <mat-error role="alert">Máximo 1000 caracteres</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="cancel()" [disabled]="saving()">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="saving()">
+    @if (saving()) {
+      <mat-spinner diameter="18" />
+    } @else {
+      <ng-container>Guardar cambios</ng-container>
+    }
+  </button>
+</mat-dialog-actions>

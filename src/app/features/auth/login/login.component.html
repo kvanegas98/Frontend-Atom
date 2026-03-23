@@ -1,0 +1,56 @@
+<div class="login-page" role="main">
+  <mat-card class="login-card">
+    <mat-card-header class="login-card__header">
+      <div class="login-card__logo" aria-hidden="true">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <mat-card-title>TodoApp</mat-card-title>
+      <mat-card-subtitle>Ingresa tu email para continuar</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        class="login-form"
+        novalidate
+        aria-label="Formulario de inicio de sesión"
+      >
+        <mat-form-field appearance="outline" class="login-form__field">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix aria-hidden="true">email</mat-icon>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="tu@email.com"
+            autocomplete="email"
+            aria-label="Dirección de email"
+            aria-required="true"
+            [attr.aria-invalid]="emailControl.invalid && emailControl.touched"
+          />
+          @if (emailControl.hasError('required') && emailControl.touched) {
+            <mat-error role="alert">El email es obligatorio</mat-error>
+          } @else if (emailControl.hasError('email') && emailControl.touched) {
+            <mat-error role="alert">Ingresa un email válido</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="login-form__submit"
+          [disabled]="loading()"
+          aria-label="Ingresar a la aplicación"
+        >
+          @if (loading()) {
+            <mat-spinner diameter="20" aria-label="Cargando..." />
+          } @else {
+            <ng-container>Ingresar</ng-container>
+          }
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

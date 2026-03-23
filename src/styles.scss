@@ -1,0 +1,58 @@
+@use '@angular/material' as mat;
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  color-scheme: light;
+  background-color: v.$bg-page;
+  color: v.$text-primary;
+  font-family: v.$font-family;
+  font-size: v.$font-size-base;
+  margin: 0;
+  height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// ── Utility classes ──────────────────────────────────────────────────────────
+.text-secondary { color: v.$text-secondary; }
+.text-hint      { color: v.$text-hint; }
+.text-success   { color: v.$success; }
+.text-warn      { color: v.$warn; }
+
+.mt-sm  { margin-top: v.$spacing-sm; }
+.mt-md  { margin-top: v.$spacing-md; }
+.mb-sm  { margin-bottom: v.$spacing-sm; }
+.mb-md  { margin-bottom: v.$spacing-md; }
+
+.full-width { width: 100%; }
+
+// ── Mat dialog override ───────────────────────────────────────────────────────
+.mat-mdc-dialog-container {
+  border-radius: v.$radius-lg !important;
+}
+
+// ── Snackbar ─────────────────────────────────────────────────────────────────
+.snack-success .mdc-snackbar__surface {
+  background-color: v.$success !important;
+}
+
+.snack-error .mdc-snackbar__surface {
+  background-color: v.$warn !important;
+}

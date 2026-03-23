@@ -1,0 +1,75 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+.login-page {
+  @include m.flex-center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, v.$primary 0%, v.$primary-dark 100%);
+  padding: v.$spacing-md;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: v.$radius-lg !important;
+  box-shadow: v.$shadow-elevated !important;
+
+  &__header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 0;
+    display: flex;
+
+    .mat-mdc-card-title {
+      font-size: v.$font-size-xl;
+      font-weight: v.$font-weight-bold;
+      color: v.$text-primary;
+      margin-top: v.$spacing-sm;
+    }
+
+    .mat-mdc-card-subtitle {
+      color: v.$text-secondary;
+      font-size: v.$font-size-base;
+    }
+  }
+
+  &__logo {
+    @include m.flex-center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: v.$primary-light;
+    margin: 0 auto v.$spacing-sm;
+
+    mat-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: v.$primary;
+    }
+  }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-md;
+  padding-top: v.$spacing-md;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__submit {
+    width: 100%;
+    height: 48px;
+    font-size: v.$font-size-md;
+    font-weight: v.$font-weight-medium;
+    letter-spacing: 0.5px;
+
+    mat-spinner {
+      margin: 0 auto;
+    }
+  }
+}

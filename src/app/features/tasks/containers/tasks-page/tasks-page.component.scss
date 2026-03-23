@@ -1,0 +1,201 @@
+@use 'styles/variables' as v;
+@use 'styles/mixins' as m;
+
+// ── Page layout ──────────────────────────────────────────────────────────────
+.tasks-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: v.$bg-page;
+}
+
+// ── Toolbar ──────────────────────────────────────────────────────────────────
+.tasks-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  padding: 0 v.$spacing-md;
+  box-shadow: v.$shadow-card;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-sm;
+    flex: 1;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  &__title {
+    font-size: v.$font-size-lg;
+    font-weight: v.$font-weight-bold;
+    letter-spacing: 0.5px;
+  }
+
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-md;
+    margin-right: v.$spacing-sm;
+
+    @include m.mobile {
+      display: none;
+    }
+  }
+
+  &__stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: v.$font-size-sm;
+    font-weight: v.$font-weight-medium;
+    opacity: 0.9;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &--done mat-icon {
+      color: rgba(v.$success, 0.9);
+    }
+  }
+
+  &__logout {
+    color: v.$text-on-primary;
+  }
+}
+
+// ── Main & container ─────────────────────────────────────────────────────────
+.tasks-main {
+  flex: 1;
+  padding: v.$spacing-lg v.$spacing-md;
+
+  @include m.mobile {
+    padding: v.$spacing-md v.$spacing-sm;
+  }
+}
+
+.tasks-container {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-md;
+}
+
+// ── Divider ───────────────────────────────────────────────────────────────────
+.tasks-divider {
+  margin: v.$spacing-xs 0;
+}
+
+// ── List header ───────────────────────────────────────────────────────────────
+.tasks-list-header {
+  @include m.flex-between;
+
+  &__title {
+    font-size: v.$font-size-lg;
+    font-weight: v.$font-weight-medium;
+    color: v.$text-primary;
+    margin: 0;
+  }
+
+  &__count {
+    font-size: v.$font-size-base;
+    color: v.$text-secondary;
+    font-weight: v.$font-weight-regular;
+    margin-left: v.$spacing-xs;
+  }
+}
+
+// ── Spin animation ────────────────────────────────────────────────────────────
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+// ── Task list ─────────────────────────────────────────────────────────────────
+.tasks-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+
+  &__item {
+    display: block;
+  }
+}
+
+// ── Loading state ─────────────────────────────────────────────────────────────
+.tasks-loading {
+  @include m.flex-center;
+  flex-direction: column;
+  gap: v.$spacing-md;
+  padding: v.$spacing-2xl;
+  color: v.$text-secondary;
+}
+
+// ── Error state ───────────────────────────────────────────────────────────────
+.tasks-error {
+  @include m.flex-center;
+  flex-direction: column;
+  gap: v.$spacing-md;
+  padding: v.$spacing-2xl;
+  text-align: center;
+  color: v.$warn;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+
+  p {
+    color: v.$text-secondary;
+    margin: 0;
+  }
+}
+
+// ── Empty state ───────────────────────────────────────────────────────────────
+.tasks-empty {
+  @include m.flex-center;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  padding: v.$spacing-2xl;
+  text-align: center;
+
+  &__icon {
+    font-size: 72px;
+    width: 72px;
+    height: 72px;
+    color: v.$text-hint;
+  }
+
+  h3 {
+    font-size: v.$font-size-lg;
+    color: v.$text-secondary;
+    margin: 0;
+  }
+
+  p {
+    font-size: v.$font-size-base;
+    color: v.$text-hint;
+    margin: 0;
+    max-width: 320px;
+  }
+}

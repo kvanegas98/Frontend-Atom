@@ -1,0 +1,27 @@
+@use 'styles/variables' as v;
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  font-size: v.$font-size-lg;
+  font-weight: v.$font-weight-medium;
+
+  &__icon {
+    color: v.$primary;
+  }
+}
+
+.dialog-content {
+  p {
+    color: v.$text-secondary;
+    font-size: v.$font-size-base;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+.dialog-actions {
+  gap: v.$spacing-sm;
+  padding: v.$spacing-md v.$spacing-md v.$spacing-md 0;
+}

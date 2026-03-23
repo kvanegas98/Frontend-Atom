@@ -1,0 +1,42 @@
+@use 'styles/variables' as v;
+
+.task-form-card {
+  border-radius: v.$radius-md !important;
+  box-shadow: v.$shadow-card !important;
+
+  &__avatar {
+    background-color: v.$primary-light;
+    color: v.$primary;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  padding-top: v.$spacing-sm;
+
+  &__field {
+    width: 100%;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__submit {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-xs;
+    min-width: 160px;
+
+    mat-spinner {
+      display: inline-flex;
+    }
+  }
+}
