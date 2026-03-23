@@ -58,6 +58,7 @@
     margin: 0 0 v.$spacing-xs;
     line-height: 1.5;
     word-break: break-word;
+    white-space: pre-wrap;
   }
 
   &__expand {

@@ -24,8 +24,8 @@
       @if (task.description) {
         <p class="task-item__description">{{ visibleDescription }}</p>
         @if (isLongDescription) {
-          <button mat-button class="task-item__expand" (click)="expanded = !expanded">
-            {{ expanded ? 'Ver menos' : 'Ver más' }}
+          <button mat-button type="button" class="task-item__expand" (click)="expanded.set(!expanded()); $event.stopPropagation()">
+            {{ expanded() ? 'Ver menos' : 'Ver más' }}
           </button>
         }
       }

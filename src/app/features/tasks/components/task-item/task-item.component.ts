@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
@@ -36,7 +36,7 @@ export class TaskItemComponent {
   @Output() editTask = new EventEmitter<Task>();
   @Output() deleteTask = new EventEmitter<Task>();
 
-  expanded = false;
+  readonly expanded = signal(false);
 
   get isCompleted(): boolean {
     return this.task.status === 'completed';
@@ -48,7 +48,7 @@ export class TaskItemComponent {
 
   get visibleDescription(): string {
     if (!this.task.description) return '';
-    if (this.expanded || !this.isLongDescription) return this.task.description;
+    if (this.expanded() || !this.isLongDescription) return this.task.description;
     return this.task.description.slice(0, DESC_LIMIT) + '…';
   }
 

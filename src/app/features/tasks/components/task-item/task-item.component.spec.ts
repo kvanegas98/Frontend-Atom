@@ -90,7 +90,7 @@ describe('TaskItemComponent', () => {
       const fixture = TestBed.createComponent(TaskItemComponent);
       const component = fixture.componentInstance;
       component.task = { ...baseTask, description: longText };
-      component.expanded = false;
+      component.expanded.set(false);
       fixture.detectChanges();
 
       const result = component.visibleDescription;
@@ -102,7 +102,7 @@ describe('TaskItemComponent', () => {
       const fixture = TestBed.createComponent(TaskItemComponent);
       const component = fixture.componentInstance;
       component.task = { ...baseTask, description: longText };
-      component.expanded = true;
+      component.expanded.set(true);
       fixture.detectChanges();
 
       expect(component.visibleDescription).toBe(longText);
@@ -116,7 +116,7 @@ describe('TaskItemComponent', () => {
       const fixture = TestBed.createComponent(TaskItemComponent);
       fixture.componentInstance.task = { ...baseTask, description: longText };
       fixture.detectChanges();
-      expect(fixture.componentInstance.expanded).toBe(false);
+      expect(fixture.componentInstance.expanded()).toBe(false);
     });
 
     it('el botón "Ver más" aparece cuando la descripción es larga y está colapsada', () => {
@@ -139,7 +139,7 @@ describe('TaskItemComponent', () => {
       btn.click();
       fixture.detectChanges();
 
-      expect(component.expanded).toBe(true);
+      expect(component.expanded()).toBe(true);
       expect(btn.textContent?.trim()).toBe('Ver menos');
     });
 
