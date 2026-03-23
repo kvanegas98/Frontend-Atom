@@ -13,8 +13,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 
+import { AutoFocusDirective } from '../../../shared/directives/auto-focus.directive';
+
 import { AuthService } from '../../../core/services/auth.service';
 import { ConfirmDialogComponent } from '../../tasks/components/confirm-dialog/confirm-dialog.component';
+
 
 @Component({
   selector: 'app-login',
@@ -28,6 +31,7 @@ import { ConfirmDialogComponent } from '../../tasks/components/confirm-dialog/co
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    AutoFocusDirective,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

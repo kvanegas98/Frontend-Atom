@@ -1,9 +1,10 @@
-import { Component, OnInit, inject, signal, ViewChild } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,12 +14,15 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { TaskService } from '../../../../core/services/task.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Task, CreateTaskPayload, UpdateTaskPayload } from '../../../../core/models';
+import { Task, TaskStatus, CreateTaskPayload, UpdateTaskPayload } from '../../../../core/models';
 
 import { TaskItemComponent } from '../../components/task-item/task-item.component';
 import { TaskFormComponent } from '../../components/task-form/task-form.component';
 import { EditTaskDialogComponent } from '../../components/edit-task-dialog/edit-task-dialog.component';
 import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+
+/** Opciones de filtrado para la lista de tareas. */
+export type TaskFilter = 'all' | 'pending' | 'completed';
 
 @Component({
   selector: 'app-tasks-page',
@@ -27,6 +31,7 @@ import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
@@ -49,6 +54,15 @@ export class TasksPageComponent implements OnInit {
   readonly tasks = signal<Task[]>([]);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly activeFilter = signal<TaskFilter>('all');
+
+  /** Tareas filtradas según el filtro activo. */
+  readonly filteredTasks = computed(() => {
+    const filter = this.activeFilter();
+    const all = this.tasks();
+    if (filter === 'all') return all;
+    return all.filter(t => t.status === filter);
+  });
 
   ngOnInit(): void {
     this.loadTasks();
@@ -68,9 +82,14 @@ export class TasksPageComponent implements OnInit {
 
     this.taskService.getTasks().subscribe({
       next: res => {
-        const sorted = [...res.data].sort(
-          (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
+        const sorted = [...res.data].sort((a, b) => {
+          // Pendientes primero, completadas después
+          if (a.status !== b.status) {
+            return a.status === 'pending' ? -1 : 1;
+          }
+          // Dentro de cada grupo: más recientes primero
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
         this.tasks.set(sorted);
         this.loading.set(false);
       },
@@ -81,12 +100,22 @@ export class TasksPageComponent implements OnInit {
     });
   }
 
+  setFilter(filter: TaskFilter): void {
+    this.activeFilter.set(filter);
+  }
+
   onTaskCreated(payload: CreateTaskPayload): void {
     this.taskFormRef.setSubmitting(true);
 
     this.taskService.createTask(payload).subscribe({
       next: newTask => {
-        this.tasks.update(list => [...list, newTask]);
+        this.tasks.update(list => {
+          const updated = [...list, newTask];
+          return updated.sort((a, b) => {
+            if (a.status !== b.status) return a.status === 'pending' ? -1 : 1;
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+        });
         this.taskFormRef.reset();
         this.showSuccess('Tarea creada exitosamente');
       },
@@ -98,14 +127,18 @@ export class TasksPageComponent implements OnInit {
   }
 
   onToggleStatus(task: Task): void {
-    const newStatus = task.status === 'pending' ? 'completed' : 'pending';
+    const newStatus: TaskStatus = task.status === 'pending' ? 'completed' : 'pending';
     const payload: UpdateTaskPayload = { status: newStatus };
 
     this.taskService.updateTask(task.id, payload).subscribe({
       next: updated => {
-        this.tasks.update(list =>
-          list.map(t => (t.id === updated.id ? updated : t))
-        );
+        this.tasks.update(list => {
+          const replaced = list.map(t => (t.id === updated.id ? updated : t));
+          return replaced.sort((a, b) => {
+            if (a.status !== b.status) return a.status === 'pending' ? -1 : 1;
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+        });
       },
       error: () => this.showError('Error al actualizar el estado'),
     });

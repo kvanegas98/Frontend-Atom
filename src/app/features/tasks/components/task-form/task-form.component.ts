@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  inject,
+  signal,
+  ChangeDetectorRef,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
@@ -29,8 +39,10 @@ import { CreateTaskPayload } from '../../../../core/models';
 })
 export class TaskFormComponent {
   @Output() taskCreated = new EventEmitter<CreateTaskPayload>();
+  @ViewChild('titleInput') titleInput!: ElementRef<HTMLInputElement>;
 
   private readonly fb = inject(FormBuilder);
+  private readonly cdRef = inject(ChangeDetectorRef);
 
   readonly submitting = signal(false);
 
@@ -71,8 +83,12 @@ export class TaskFormComponent {
   }
 
   reset(): void {
-    this.form.reset();
-    this.form.enable();
     this.submitting.set(false);
+    this.form.reset({ title: '', description: '' });
+    this.form.enable();
+    this.cdRef.detectChanges();
+
+    // Re-enfocar el input de título para que el usuario pueda agregar otra tarea
+    setTimeout(() => this.titleInput?.nativeElement?.focus(), 0);
   }
 }

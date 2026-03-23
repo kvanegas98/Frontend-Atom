@@ -39,7 +39,7 @@
         <h2 class="tasks-list-header__title">
           Mis tareas
           @if (tasks().length > 0) {
-            <span class="tasks-list-header__count">({{ tasks().length }})</span>
+            <span class="tasks-list-header__count">({{ filteredTasks().length }})</span>
           }
         </h2>
         <button
@@ -52,6 +52,26 @@
           <mat-icon [class.spin]="loading()" aria-hidden="true">refresh</mat-icon>
         </button>
       </div>
+
+      @if (tasks().length > 0) {
+        <mat-button-toggle-group
+          class="tasks-filter"
+          [value]="activeFilter()"
+          (change)="setFilter($event.value)"
+          aria-label="Filtrar tareas por estado"
+          hideSingleSelectionIndicator
+        >
+          <mat-button-toggle value="all">
+            Todas ({{ tasks().length }})
+          </mat-button-toggle>
+          <mat-button-toggle value="pending">
+            Pendientes ({{ pendingCount }})
+          </mat-button-toggle>
+          <mat-button-toggle value="completed">
+            Completadas ({{ completedCount }})
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      }
 
       @if (loading()) {
         <div class="tasks-loading" role="status" aria-live="polite" aria-label="Cargando tareas">
@@ -78,9 +98,17 @@
         </div>
       }
 
-      @if (!loading() && tasks().length > 0) {
+      @if (!loading() && filteredTasks().length === 0 && tasks().length > 0) {
+        <div class="tasks-empty" role="status">
+          <mat-icon class="tasks-empty__icon" aria-hidden="true">filter_list_off</mat-icon>
+          <h3>Sin resultados</h3>
+          <p>No hay tareas {{ activeFilter() === 'pending' ? 'pendientes' : 'completadas' }} por ahora.</p>
+        </div>
+      }
+
+      @if (!loading() && filteredTasks().length > 0) {
         <ul class="tasks-list" role="list" aria-label="Lista de tareas">
-          @for (task of tasks(); track task.id) {
+          @for (task of filteredTasks(); track task.id) {
             <li class="tasks-list__item">
               <app-task-item
                 [task]="task"

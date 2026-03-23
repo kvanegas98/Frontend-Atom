@@ -17,6 +17,7 @@
         <mat-label>Título *</mat-label>
         <input
           matInput
+          #titleInput
           formControlName="title"
           placeholder="¿Qué necesitas hacer?"
           maxlength="200"
@@ -50,7 +51,7 @@
 
       <div class="task-form__actions">
         <button
-          mat-raised-button
+          mat-flat-button
           color="primary"
           type="submit"
           [disabled]="submitting() || !titleControl.value?.trim()"
@@ -58,15 +59,10 @@
           aria-label="Agregar nueva tarea"
         >
           @if (submitting()) {
-            <ng-container>
-              <mat-spinner diameter="20" aria-label="Guardando..." />
-              <span>Guardando...</span>
-            </ng-container>
+            <mat-spinner diameter="20" aria-label="Guardando..." />
+            <span>Guardando...</span>
           } @else {
-            <ng-container>
-              <mat-icon aria-hidden="true">add</mat-icon>
-              <span>Agregar tarea</span>
-            </ng-container>
+            <span>Agregar tarea</span>
           }
         </button>
       </div>

@@ -34,15 +34,30 @@
   }
 
   &__submit {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: v.$spacing-xs;
     min-width: 160px;
+    height: 44px;
+    font-size: v.$font-size-base;
+    font-weight: v.$font-weight-medium;
+    letter-spacing: 0.3px;
+    border-radius: v.$radius-md !important;
+    transition: transform v.$transition-fast, box-shadow v.$transition-fast;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.35);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
 
     @media (max-width: 480px) {
       width: 100%;
       min-width: unset;
-      justify-content: center;
     }
 
     mat-spinner {

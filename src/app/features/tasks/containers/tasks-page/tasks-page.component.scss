@@ -129,6 +129,28 @@
   }
 }
 
+// ── Filter toggles ────────────────────────────────────────────────────────────
+.tasks-filter {
+  width: 100%;
+  border-radius: v.$radius-md !important;
+  border: 1px solid v.$border-color;
+
+  .mat-button-toggle {
+    flex: 1;
+    font-size: v.$font-size-sm;
+    font-weight: v.$font-weight-medium;
+
+    &.mat-button-toggle-checked {
+      background-color: v.$primary;
+      color: v.$text-on-primary;
+    }
+  }
+
+  .mat-button-toggle-label-content {
+    line-height: 36px !important;
+  }
+}
+
 // ── Spin animation ────────────────────────────────────────────────────────────
 @keyframes spin {
   from { transform: rotate(0deg); }

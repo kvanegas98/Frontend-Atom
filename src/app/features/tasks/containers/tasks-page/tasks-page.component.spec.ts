@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, throwError } from 'rxjs';
 
-import { TasksPageComponent } from './tasks-page.component';
+import { TasksPageComponent, TaskFilter } from './tasks-page.component';
 import { TaskService } from '../../../../core/services/task.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Task, TasksResponse } from '../../../../core/models';
@@ -78,11 +78,13 @@ describe('TasksPageComponent', () => {
     expect(component.tasks()[0].id).toBe('t1');
   });
 
-  it('sorts tasks by createdAt ascending', () => {
-    const older: Task = { ...mockTask, id: 't0', createdAt: '2024-01-10T00:00:00Z' };
-    const newer: Task = { ...mockTask, id: 't2', createdAt: '2024-01-20T00:00:00Z' };
+  it('ordena pendientes primero, después completadas, cada grupo por fecha descendente', () => {
+    const pendingOld: Task = { ...mockTask, id: 'p1', status: 'pending', createdAt: '2024-01-10T00:00:00Z' };
+    const pendingNew: Task = { ...mockTask, id: 'p2', status: 'pending', createdAt: '2024-01-20T00:00:00Z' };
+    const completedOld: Task = { ...mockTask, id: 'c1', status: 'completed', createdAt: '2024-01-05T00:00:00Z' };
+    const completedNew: Task = { ...mockTask, id: 'c2', status: 'completed', createdAt: '2024-01-25T00:00:00Z' };
     taskServiceSpy.getTasks.mockReturnValue(
-      of({ data: [newer, older, mockTask], nextCursor: null, hasMore: false })
+      of({ data: [completedNew, pendingOld, completedOld, pendingNew], nextCursor: null, hasMore: false })
     );
 
     const fixture = TestBed.createComponent(TasksPageComponent);
@@ -90,7 +92,7 @@ describe('TasksPageComponent', () => {
     fixture.detectChanges();
 
     const ids = component.tasks().map(t => t.id);
-    expect(ids).toEqual(['t0', 't1', 't2']);
+    expect(ids).toEqual(['p2', 'p1', 'c2', 'c1']);
   });
 
   it('sets error signal when getTasks fails', () => {
@@ -189,6 +191,52 @@ describe('TasksPageComponent', () => {
 
       expect(component.pendingCount).toBe(1);
       expect(component.completedCount).toBe(1);
+    });
+  });
+
+  describe('filteredTasks', () => {
+    it('devuelve todas las tareas cuando el filtro es "all"', () => {
+      const completed: Task = { ...mockTask, id: 't2', status: 'completed' };
+      taskServiceSpy.getTasks.mockReturnValue(
+        of({ data: [mockTask, completed], nextCursor: null, hasMore: false })
+      );
+
+      const fixture = TestBed.createComponent(TasksPageComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      component.setFilter('all');
+      expect(component.filteredTasks()).toHaveLength(2);
+    });
+
+    it('devuelve solo pendientes cuando el filtro es "pending"', () => {
+      const completed: Task = { ...mockTask, id: 't2', status: 'completed' };
+      taskServiceSpy.getTasks.mockReturnValue(
+        of({ data: [mockTask, completed], nextCursor: null, hasMore: false })
+      );
+
+      const fixture = TestBed.createComponent(TasksPageComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      component.setFilter('pending');
+      expect(component.filteredTasks()).toHaveLength(1);
+      expect(component.filteredTasks()[0].status).toBe('pending');
+    });
+
+    it('devuelve solo completadas cuando el filtro es "completed"', () => {
+      const completed: Task = { ...mockTask, id: 't2', status: 'completed' };
+      taskServiceSpy.getTasks.mockReturnValue(
+        of({ data: [mockTask, completed], nextCursor: null, hasMore: false })
+      );
+
+      const fixture = TestBed.createComponent(TasksPageComponent);
+      const component = fixture.componentInstance;
+      fixture.detectChanges();
+
+      component.setFilter('completed');
+      expect(component.filteredTasks()).toHaveLength(1);
+      expect(component.filteredTasks()[0].status).toBe('completed');
     });
   });
 });
