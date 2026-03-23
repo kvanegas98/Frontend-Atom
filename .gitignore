@@ -17,7 +17,7 @@ dist/
 build/
 out/
 out-tsc/
-.angular/cache/
+.angular/
 
 # ----------------------------------------------------------
 # Variables de entorno y secretos 

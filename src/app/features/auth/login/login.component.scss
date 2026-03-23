@@ -3,16 +3,37 @@
 
 .login-page {
   @include m.flex-center;
+  flex-direction: column;
+  gap: v.$spacing-lg;
   min-height: 100vh;
-  background: linear-gradient(135deg, v.$primary 0%, v.$primary-dark 100%);
+  background: linear-gradient(150deg, v.$primary-dark 0%, v.$primary 60%, #FF8A65 100%);
   padding: v.$spacing-md;
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: v.$spacing-sm;
+  color: v.$text-on-primary;
+
+  &__icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__name {
+    font-size: v.$font-size-2xl;
+    font-weight: v.$font-weight-bold;
+    letter-spacing: 4px;
+  }
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
   border-radius: v.$radius-lg !important;
-  box-shadow: v.$shadow-elevated !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
 
   &__header {
     flex-direction: column;
@@ -36,17 +57,18 @@
 
   &__logo {
     @include m.flex-center;
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background-color: v.$primary-light;
+    background: linear-gradient(135deg, v.$primary 0%, v.$primary-dark 100%);
     margin: 0 auto v.$spacing-sm;
+    box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
 
     mat-icon {
-      font-size: 36px;
-      width: 36px;
-      height: 36px;
-      color: v.$primary;
+      font-size: 38px;
+      width: 38px;
+      height: 38px;
+      color: v.$text-on-primary;
     }
   }
 }
@@ -65,8 +87,9 @@
     width: 100%;
     height: 48px;
     font-size: v.$font-size-md;
-    font-weight: v.$font-weight-medium;
-    letter-spacing: 0.5px;
+    font-weight: v.$font-weight-bold;
+    letter-spacing: 1px;
+    border-radius: v.$radius-md !important;
 
     mat-spinner {
       margin: 0 auto;

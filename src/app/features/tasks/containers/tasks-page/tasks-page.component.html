@@ -1,10 +1,9 @@
 <div class="tasks-page">
 
-  <!-- ── Toolbar ──────────────────────────────────────────────────────── -->
   <mat-toolbar class="tasks-toolbar" color="primary" role="banner">
     <div class="tasks-toolbar__brand">
-      <mat-icon aria-hidden="true">check_circle</mat-icon>
-      <span class="tasks-toolbar__title">TodoApp</span>
+      <mat-icon aria-hidden="true">rocket_launch</mat-icon>
+      <span class="tasks-toolbar__title">ATOM Tasks</span>
     </div>
 
     <div class="tasks-toolbar__stats" aria-label="Estadísticas de tareas">
@@ -19,26 +18,23 @@
     </div>
 
     <button
-      mat-icon-button
+      mat-stroked-button
       (click)="logout()"
-      matTooltip="Cerrar sesión"
-      aria-label="Cerrar sesión"
+      aria-label="Volver al inicio de sesión"
       class="tasks-toolbar__logout"
     >
       <mat-icon aria-hidden="true">logout</mat-icon>
+      <span class="tasks-toolbar__logout-text">Volver al inicio</span>
     </button>
   </mat-toolbar>
 
-  <!-- ── Main content ─────────────────────────────────────────────────── -->
   <main class="tasks-main">
     <div class="tasks-container">
 
-      <!-- New task form -->
       <app-task-form (taskCreated)="onTaskCreated($event)" />
 
       <mat-divider class="tasks-divider" />
 
-      <!-- Task list header -->
       <div class="tasks-list-header">
         <h2 class="tasks-list-header__title">
           Mis tareas
@@ -57,7 +53,6 @@
         </button>
       </div>
 
-      <!-- Loading state -->
       @if (loading()) {
         <div class="tasks-loading" role="status" aria-live="polite" aria-label="Cargando tareas">
           <mat-spinner diameter="48" />
@@ -65,27 +60,24 @@
         </div>
       }
 
-      <!-- Error state -->
       @if (error() && !loading()) {
         <div class="tasks-error" role="alert">
           <mat-icon aria-hidden="true">error_outline</mat-icon>
           <p>{{ error() }}</p>
-          <button mat-raised-button color="primary" (click)="loadTasks()">
+          <button mat-flat-button color="primary" (click)="loadTasks()">
             Reintentar
           </button>
         </div>
       }
 
-      <!-- Empty state -->
       @if (!loading() && !error() && tasks().length === 0) {
         <div class="tasks-empty" role="status">
           <mat-icon class="tasks-empty__icon" aria-hidden="true">assignment_turned_in</mat-icon>
-          <h3>¡Sin tareas por ahora!</h3>
+          <h3>Sin tareas por ahora</h3>
           <p>Usa el formulario de arriba para agregar tu primera tarea.</p>
         </div>
       }
 
-      <!-- Task list -->
       @if (!loading() && tasks().length > 0) {
         <ul class="tasks-list" role="list" aria-label="Lista de tareas">
           @for (task of tasks(); track task.id) {

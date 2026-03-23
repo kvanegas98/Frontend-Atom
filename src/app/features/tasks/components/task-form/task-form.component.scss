@@ -27,6 +27,10 @@
   &__actions {
     display: flex;
     justify-content: flex-end;
+
+    @media (max-width: 480px) {
+      justify-content: stretch;
+    }
   }
 
   &__submit {
@@ -34,6 +38,12 @@
     align-items: center;
     gap: v.$spacing-xs;
     min-width: 160px;
+
+    @media (max-width: 480px) {
+      width: 100%;
+      min-width: unset;
+      justify-content: center;
+    }
 
     mat-spinner {
       display: inline-flex;

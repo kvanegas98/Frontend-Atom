@@ -70,7 +70,16 @@
   }
 
   &__logout {
-    color: v.$text-on-primary;
+    color: v.$text-on-primary !important;
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    border-radius: v.$radius-md !important;
+    font-size: v.$font-size-sm;
+
+    &-text {
+      @media (max-width: #{v.$bp-mobile}) {
+        display: none;
+      }
+    }
   }
 }
 
