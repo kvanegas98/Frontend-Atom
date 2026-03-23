@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { FormatDatePipe } from './format-date.pipe';
 
 describe('FormatDatePipe', () => {
@@ -13,12 +13,13 @@ describe('FormatDatePipe', () => {
   });
 
   it('formats a valid ISO date string', () => {
-    expect(pipe.transform('2024-01-15T10:00:00.000Z')).toBe('15 ene 2024');
+    const d = new Date(2024, 0, 15, 14, 30);
+    expect(pipe.transform(d.toISOString())).toBe('15 ene 2024, 14:30');
   });
 
   it('formats december correctly', () => {
-    // Use noon UTC to avoid timezone boundary issues
-    expect(pipe.transform('2023-12-31T12:00:00.000Z')).toBe('31 dic 2023');
+    const d = new Date(2023, 11, 31, 23, 59);
+    expect(pipe.transform(d.toISOString())).toBe('31 dic 2023, 23:59');
   });
 
   it('returns empty string for null', () => {
