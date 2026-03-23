@@ -1,6 +1,6 @@
 <mat-card class="task-form-card">
   <mat-card-header>
-    <mat-icon mat-card-avatar class="task-form-card__avatar" aria-hidden="true">add_task</mat-icon>
+    <mat-icon mat-card-avatar class="task-form-card__avatar" aria-hidden="true">edit_note</mat-icon>
     <mat-card-title>Nueva tarea</mat-card-title>
     <mat-card-subtitle>Agrega una tarea a tu lista</mat-card-subtitle>
   </mat-card-header>
@@ -53,7 +53,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="submitting()"
+          [disabled]="submitting() || !titleControl.value?.trim()"
           class="task-form__submit"
           aria-label="Agregar nueva tarea"
         >

@@ -43,6 +43,16 @@ body {
 
 .full-width { width: 100%; }
 
+// ── Neutralizar tinte naranja de Material 3 en superficies ───────────────────
+.mat-mdc-card {
+  --mdc-elevated-card-container-color: #ffffff;
+  --mdc-outlined-card-container-color: #ffffff;
+}
+
+.mat-mdc-form-field {
+  --mdc-filled-text-field-container-color: #ffffff;
+}
+
 // ── Mat dialog override ───────────────────────────────────────────────────────
 .mat-mdc-dialog-container {
   border-radius: v.$radius-lg !important;

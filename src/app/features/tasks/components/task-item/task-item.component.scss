@@ -55,9 +55,18 @@
   &__description {
     font-size: v.$font-size-base;
     color: v.$text-secondary;
-    margin: 0 0 v.$spacing-sm;
+    margin: 0 0 v.$spacing-xs;
     line-height: 1.5;
     word-break: break-word;
+  }
+
+  &__expand {
+    font-size: v.$font-size-sm;
+    color: v.$primary;
+    padding: 0;
+    height: 24px;
+    min-width: unset;
+    margin-bottom: v.$spacing-sm;
   }
 
   &__meta {

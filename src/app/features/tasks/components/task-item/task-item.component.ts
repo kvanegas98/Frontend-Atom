@@ -11,6 +11,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Task } from '../../../../core/models';
 import { FormatDatePipe } from '../../../../shared/pipes/format-date.pipe';
 
+const DESC_LIMIT = 120;
+
 @Component({
   selector: 'app-task-item',
   standalone: true,
@@ -34,8 +36,20 @@ export class TaskItemComponent {
   @Output() editTask = new EventEmitter<Task>();
   @Output() deleteTask = new EventEmitter<Task>();
 
+  expanded = false;
+
   get isCompleted(): boolean {
     return this.task.status === 'completed';
+  }
+
+  get isLongDescription(): boolean {
+    return (this.task.description?.length ?? 0) > DESC_LIMIT;
+  }
+
+  get visibleDescription(): string {
+    if (!this.task.description) return '';
+    if (this.expanded || !this.isLongDescription) return this.task.description;
+    return this.task.description.slice(0, DESC_LIMIT) + '…';
   }
 
   onToggle(): void {

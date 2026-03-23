@@ -72,6 +72,7 @@ export class TaskFormComponent {
 
   reset(): void {
     this.form.reset();
+    this.form.enable();
     this.submitting.set(false);
   }
 }
